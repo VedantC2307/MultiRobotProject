@@ -6,7 +6,7 @@
   <xacro:include filename="$(find my_2wd_robot)/urdf/robot_parts/wheel.urdf.xacro" />
   <xacro:include filename="$(find my_2wd_robot)/urdf/robot_parts/caster_wheel.urdf.xacro" />
   <xacro:include filename="$(find my_2wd_robot)/urdf/controllers/diff_drive.urdf.xacro" />
-  <xacro:include filename="$(find my_2wd_robot)/urdf/sensors/lidar_trial.xacro" />
+  <xacro:include filename="$(find my_2wd_robot)/urdf/sensors/lidar.xacro" />
 
   <xacro:base 
     length="${base_length}" 
@@ -63,68 +63,10 @@
     wheel_torque="${wheel_torque}"
   />
 
-  <!-- <xacro:lidar
-  radius="0.035" 
-  width="0.08" 
-  mass="0.1"
-  /> -->
-
-
-
-  <!-- Lidar sensor -->
-  <!-- <xacro:macro name="add_lidar" params="lidar_name parent_link lidar_pose">
-  <link name="${lidar_name}">
-      <visual>
-          <geometry>
-              <cylinder length="0.5" radius="0.3"/>
-          </geometry>
-          <material>
-              <color rgba="0.8784 0.6627 0.6627 1.0"/>
-          </material>
-      </visual>
-      <collision>
-          <geometry>
-              <cylinder length="0.5" radius="0.3"/>
-          </geometry>
-      </collision>
-  </link>
-
-  <joint name="${lidar_name}_joint" type="fixed">
-      <parent link="${parent_link}"/>
-      <child link="${lidar_name}"/>
-      <origin xyz="${lidar_pose}" rpy="0 0 0"/>
-  </joint> -->
-
-  <!-- Lidar plugin -->
-  <!-- <gazebo>
-      <sensor type="gpu_ray" name="${lidar_name}_sensor">
-          <pose>${lidar_pose} 0 0 0</pose>
-          <update_rate>10</update_rate>
-          <ray>
-              <scan>
-                  <horizontal>
-                      <samples>720</samples>
-                      <resolution>1</resolution>
-                      <min_angle>-1.5708</min_angle>
-                      <max_angle>1.5708</max_angle>
-                  </horizontal>
-              </scan>
-              <range>
-                  <min>0.1</min>
-                  <max>10.0</max>
-                  <resolution>0.01</resolution>
-              </range>
-          </ray>
-          <plugin name="gazebo_ros_laser_controller" filename="libgazebo_ros_gpu_laser.so">
-              <topicName>/scan</topicName>
-          </plugin>
-      </sensor>
-  </gazebo>
-</xacro:macro> -->
-
-<!-- Add lidar to the robot -->
-<!-- <xacro:add_lidar lidar_name="lidar" parent_link="base_link" lidar_pose="0 0 0.15"/> -->
-
+  <xacro:lidar
+  radius="0.05" 
+  length="0.04" 
+  />
 
 
 </robot>

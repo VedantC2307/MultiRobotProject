@@ -1,109 +1,76 @@
 <?xml version="1.0"?>
-<robot name="lidar" xmlns:xacro="http://ros.org/wiki/xacro">
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" >
 
-    <xacro:macro name="lidar" params="radius width mass">
-        <joint name="laser_joint" type="fixed">
-            <parent link="base_link"/>
-            <child link="laser_frame"/>
-            <origin xyz="0 0 0.042" rpy="0 0 0"/>
-        </joint>
-
-        <link name="laser_frame">
-            <visual>
-                <origin xyz="0 0 0" rpy="0 0 0"/>
-                <geometry>
-                <cylinder radius="${radius}" length="${width}"/>
-                </geometry>
-                <material name="red">
-                    <color rgba="1 0 0 1.0"/>
-                </material>
-            </visual>
-            <collision>
-                <origin xyz="0 0 0" rpy="0 0 0"/>
-                <geometry>
-                <cylinder radius="${radius}" length="${width}"/>
-                </geometry>
-            </collision>
-        
-            <inertial>
-                <origin xyz="0 0 0" rpy="0 0 0"/>
-                <mass value="${mass}"/>
-                <inertia ixx="${(2/5) * mass * (radius * radius)}" ixy="0" ixz="0"
-                        iyy="${(2/5) * mass * (radius * radius)}" iyz="0"
-                        izz="${(2/5) * mass * (radius * radius)}" />
-            </inertial>
-
-        </link>
-
-        <gazebo reference="laser_frame">
-            <sensor name="laser" type="ray">
-                <pose>0 0 0 0 0 0</pose>
-                <always_on>true</always_on>
-                <visualize>true</visualize>
-                <update_rate>10</update_rate>
-                <ray>
-                    <scan>
-                        <horizontal>
-                            <samples>720</samples>
-                            <resolution>1</resolution>
-                            <min_angle>-3.14</min_angle>
-                            <max_angle>3.14</max_angle>
-                        </horizontal>
-                    </scan>
-                    <range>
-                        <min>0.1</min>
-                        <max>30.0</max>
-                        <resolution>0.01</resolution>
-                    </range>
-                </ray>
-                <plugin name="laser_controller" filename="gazebo_ros_ray_laser.so">
-                    <ros>
-                        <!-- <argument>~/out:=scan</argument> -->
-                        <remapping>~/out:=scan</remapping>
-                    </ros> 
-                    <output_type>sensor_msgs/LaserScan</output_type>
-                    <!-- <frame_name>laser_frame</frame_name> -->
-                    <!-- <topicName>/robot/laser/scan</topicName> -->
-                </plugin>
-            </sensor>
-        </gazebo>
-
-
-        <!-- <gazebo reference="laser_frame">
-            <sensor type="gpu_ray" name="lidar">
-              <always_on>true</always_on>
-              <update_rate>10</update_rate>
-              <pose>0 0 0 0 0 0</pose>
-              <visualize>true</visualize>
-              <ray>
-                <scan>
-                  <horizontal>
-                    <samples>720</samples>
-                    <resolution>1</resolution>
-                    <min_angle>-3.14</min_angle>
-                    <max_angle>3.14</max_angle>
-                  </horizontal>
-                </scan>
-                <range>
-                  <min>0.1</min>
-                  <max>15.0</max>
-                  <resolution>0.01</resolution>
-                </range>
-              </ray>
-              <plugin name="lidar_controller" filename="libgazebo_ros_gpu_sensor.so">
-                <ros>
-                  <remapping>~/out:=scan</remapping>                                                                                                                           
-                </ros>
-                <output_type>sensor_msgs/LaserScan</output_type> -->
-                <!-- <alwaysOn>true</alwaysOn> -->
-                <!-- <updateRate>10</updateRate> -->
-                <!-- <topicName>my_2wd/scan</topicName>
-                <frame_name>laser_frame</frame_name>
-              </plugin>
-            </sensor>
-        </gazebo> -->
-
+    <!-- Laser inertia  -->
+    <xacro:macro name="lidar_inertial_cylinder" params="mass length radius *origin">
+        <inertial>
+            <xacro:insert_block name="origin"/>
+            <mass value="${mass}" />
+            <inertia ixx="${(1/12) * mass * (3*radius*radius + length*length)}" ixy="0.0" ixz="0.0"
+                    iyy="${(1/12) * mass * (3*radius*radius + length*length)}" iyz="0.0"
+                    izz="${(1/2) * mass * (radius*radius)}" />
+        </inertial>
     </xacro:macro>
 
+    <xacro:macro name="lidar" params="radius length">
+    <!-- Laser joint  -->
+    <joint name="laser_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="laser_frame"/>
+        <origin xyz="0.1 0 0.043" rpy="0 0 0"/>
+    </joint>
+
+    <!-- Laser Link  -->
+    <link name="laser_frame">
+        <visual>
+            <geometry>
+                <cylinder radius="${radius}" length="${length}"/>
+            </geometry>
+            <material name="red">
+                <color rgba="1 0 0 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder radius="${radius}" length="${length}"/>
+            </geometry>
+        </collision>
+        <xacro:lidar_inertial_cylinder mass="0.1" length="${length}" radius="${radius}">
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </xacro:lidar_inertial_cylinder>
+    </link>
+
+    <!-- Laser gazebo control  -->
+    <gazebo reference="laser_frame">
+        <material>Gazebo/Red</material>
+
+        <sensor name="laser" type="ray">
+            <pose> 0 0 0 0 0 0 </pose>
+            <visualize>true</visualize>
+            <update_rate>10</update_rate>
+            <ray>
+                <scan>
+                    <horizontal>
+                        <samples>720</samples>
+                        <resolution>1</resolution>
+                        <min_angle>-3.14</min_angle>
+                        <max_angle>3.14</max_angle>
+                    </horizontal>
+                </scan>
+                <range>
+                    <min>0.3</min>
+                    <max>12</max>
+                    <resolution>0.01</resolution>
+                </range>
+            </ray>
+            <plugin name="laser_controller" filename="libgazebo_ros_ray_sensor.so">
+                <ros>
+                    <argument>--ros-args --remap ~/out:=/scan</argument>
+                </ros>
+                <output_type>sensor_msgs/LaserScan</output_type>
+            </plugin>
+        </sensor>
+    </gazebo>
+    </xacro:macro>
 
 </robot>
