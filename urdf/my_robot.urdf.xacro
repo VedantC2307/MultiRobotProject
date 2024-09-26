@@ -6,7 +6,8 @@
   <xacro:include filename="$(find my_2wd_robot)/urdf/robot_parts/wheel.urdf.xacro" />
   <xacro:include filename="$(find my_2wd_robot)/urdf/robot_parts/caster_wheel.urdf.xacro" />
   <xacro:include filename="$(find my_2wd_robot)/urdf/controllers/diff_drive.urdf.xacro" />
-  <xacro:include filename="$(find my_2wd_robot)/urdf/sensors/lidar.xacro" />
+  <!-- <xacro:include filename="$(find my_2wd_robot)/urdf/sensors/lidar.xacro" /> -->
+  <xacro:include filename="$(find my_2wd_robot)/urdf/sensors/camera.xacro" />
 
   <xacro:base 
     length="${base_length}" 
@@ -63,9 +64,14 @@
     wheel_torque="${wheel_torque}"
   />
 
-  <xacro:lidar
+  <!-- <xacro:lidar
   radius="0.05" 
   length="0.04" 
+  /> -->
+
+  <xacro:camera
+  radius="0.03" 
+  length="0.05" 
   />
 
 

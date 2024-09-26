@@ -15,11 +15,4 @@
   <xacro:property name="front_caster_wheel" value="true" />
   <xacro:property name="rear_caster_wheel" value="true" />
 
-  <!-- <xacro:property name="laser_pose">
-    <origin xyz="0.12 0 0.33" rpy="0 0 0"/>
-  </xacro:property>
-
-  <xacro:property name="depth_sensor_pose">
-    <origin xyz="0.14 0.0 0.045" rpy="0 0 0"/>
-  </xacro:property> -->
 </robot>
