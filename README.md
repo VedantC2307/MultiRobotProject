@@ -59,13 +59,12 @@ worlds/: Custom Gazebo worlds for simulation.
 ## Installation
 1. Clone the Repository
 ```bash
-git clone https://github.com/your_username/my_2wd_robot.git
-cd my_2wd_robot
+mkdir -p dev_ws/src
+cd dev_ws/src
+git clone https://github.com/VedantC2307/MultiRobotProject.git
 ```
 2. Install Dependencies Install ROS2 and other necessary dependencies:
 ```bash
-sudo apt update
-sudo apt install ros-humble-desktop
 rosdep install --from-paths src --ignore-src -r -y
 ```
 
@@ -74,7 +73,6 @@ rosdep install --from-paths src --ignore-src -r -y
 colcon build --symlink-install
 source install/setup.bash
 ```
-
 
 ## Usage
 ### Launch Simulation in Gazebo
