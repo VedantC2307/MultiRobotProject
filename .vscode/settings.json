@@ -1,0 +1,14 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/home/vedant/MultiRobotProject/install/ros2_path_planning_robot/lib/python3.10/site-packages",
+        "/home/vedant/MultiRobotProject/install/my_robot_trial/lib/python3.10/site-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/vedant/MultiRobotProject/install/ros2_path_planning_robot/lib/python3.10/site-packages",
+        "/home/vedant/MultiRobotProject/install/my_robot_trial/lib/python3.10/site-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ]
+}
